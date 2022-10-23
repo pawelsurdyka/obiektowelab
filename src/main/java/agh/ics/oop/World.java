@@ -2,62 +2,29 @@ package agh.ics.oop;
 
 
 public class World {
-
-
-    public static void run(Enum[] args)
-    {
-        for(Enum argument : args)
-        {
-            if (argument == Direction.FORWARD){
-                System.out.println("Zwierzak idzie do przodu");
-            }
-            if (argument == Direction.BACKWARD){
-                System.out.println("Zwierzak idzie do tyłu");
-            }
-            if (argument == Direction.RIGHT){
-                System.out.println("Zwierzak skręca w prawo");
-            }
-            if (argument == Direction.LEFT){
-                System.out.println("Zwierzak skręca w lewo");
-            }
-        }
-
-
-    }
-
-
+    // Odpowiedz na pytanie: jak zaimplementować mechanizm, który wyklucza pojawienie się dwóch zwierząt w tym
+    // samym miejscu (zakładamy że jest n zwierząt , gdzie n <= 25 z powodu wymiarów mapy)
+    // Odpowiedź : najpierw trzeba stworzyć tablice 2d o wymiarach 5X5 wypełnioną wartościami false i jeżeli
+    // jakieś zwierze pojawi się na jakimś polu to zmienić wartość na tym polu na true, jeżeli zwierze przemieszcza
+    // się z pola (x1,y1) na (x2,y2) to zmienić wartość na (x1,y1) na false a (x2,y2) na true, jeżeli jednak
+    // na polu (x2,y2) jest wartość true to wyświetlić komunikat że to pole jest zajęte i pozostawić zwierze na
+    // polu (x1,y1)
     public static void main(String[] args) {
-        int l = args.length;
-        Enum[] arr;
-        arr = new Enum[l];
-        for (int i = 0; i < args.length; i+=1)
-        {
-            switch (args[i]) {
-                case "f":
-                    arr[i] = Direction.FORWARD;
-                    break;
-                case "b":
-                    arr[i] = Direction.BACKWARD;
-                    break;
-                case "r":
-                    arr[i] = Direction.RIGHT;
-                    break;
-                case "l":
-                    arr[i] = Direction.LEFT;
-                    break;
-            }
-        }
         System.out.println("system wystartował");
-        int x = 1;
-        int y = 2;
-        Vector2d position1 = new Vector2d(1,2);
-        System.out.println(position1);
-        Vector2d position2 = new Vector2d(-2,1);
-        System.out.println(position2);
-        System.out.println(position1.equals(position2));
-        MapDirection Direction = MapDirection.EAST;
-        System.out.println(Direction.toUnitVector());
-        run(arr);
+        Animal lion = new Animal();
+        System.out.println(lion);
+        MoveDirection[] array;
+        array = OptionsParser.parse(args);
+        for (int i = 0; i < array.length; i+=1){
+            lion.move(array[i]);
+        }
+        System.out.println(lion);
+        lion = new Animal();
+        lion.move(MoveDirection.RIGHT);
+        lion.move(MoveDirection.FORWARD);
+        lion.move(MoveDirection.FORWARD);
+        lion.move(MoveDirection.FORWARD);
+        System.out.println(lion);
         System.out.println("system zakończył działanie");
     }
 

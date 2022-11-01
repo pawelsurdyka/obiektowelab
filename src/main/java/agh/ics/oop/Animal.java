@@ -1,116 +1,55 @@
 package agh.ics.oop;
 
 public class Animal {
-    private MapDirection direction = MapDirection.NORTH;
-    private Vector2d position = new Vector2d(2, 2);
-
-    public String toString() {
-        String s = "(" + Integer.toString(position.x) + "," + Integer.toString(position.y) + ")";
+    private MapDirection direction;
+    private Vector2d position;
+    private IWorldMap map;
+    public Animal(IWorldMap map, Vector2d initialPosition){
+        this.direction=MapDirection.NORTH;
+        this.map=map;
+        this.position=initialPosition;
+    }
+    public Vector2d getPos(){
+        return position;
+    }
+    public void setPos(Vector2d pos){
+        position=pos;
+    }
+    public MapDirection getDirection(){
+        return direction;
+    }
+    public String toString(){
         switch (direction) {
             case NORTH:
-                return s + " NORTH";
+                return "^";
             case SOUTH:
-                return s + " SOUTH";
+                return "v";
             case EAST:
-                return s + " EAST";
+                return ">";
             case WEST:
-                return s + " WEST";
+                return "<";
             default:
                 return "zła dana";
         }
     }
-
-    public boolean isAt(Vector2d position2) {
-        if (position.x == position2.x && position.y == position2.y) {
-            return true;
-        }
-        return false;
-    }
-
-    public String move(MoveDirection direction2) {
-        switch (direction){
-            case NORTH:
-                switch (direction2){
-                    case RIGHT:
-                        direction = MapDirection.EAST;
-                        break;
-                    case LEFT:
-                        direction = MapDirection.WEST;
-                        break;
-                    case FORWARD:
-                        if (position.y < 4){
-                            position.y += 1;
-                        }
-                        break;
-                    case BACKWARD:
-                        if (position.y > 0){
-                            position.y -= 1;
-                        }
-                        break;
-                }
+    public void move(MoveDirection direction2){
+        Vector2d add = direction.toUnitVector();
+        switch(direction2){
+            case LEFT:
+                direction=direction.previous();
                 break;
-            case SOUTH:
-                switch (direction2){
-                    case RIGHT:
-                        direction = MapDirection.WEST;
-                        break;
-                    case LEFT:
-                        direction = MapDirection.EAST;
-                        break;
-                    case FORWARD:
-                        if (position.y > 0){
-                            position.y -= 1;
-                        }
-                        break;
-                    case BACKWARD:
-                        if (position.y < 4){
-                            position.y += 1;
-                        }
-                        break;
-                }
+            case RIGHT:
+                direction=direction.next();
                 break;
-            case EAST:
-                switch (direction2){
-                    case RIGHT:
-                        direction = MapDirection.SOUTH;
-                        break;
-                    case LEFT:
-                        direction = MapDirection.NORTH;
-                        break;
-                    case FORWARD:
-                        if (position.x < 4){
-                            position.x += 1;
-                        }
-                        break;
-                    case BACKWARD:
-                        if (position.x > 0){
-                            position.x -= 1;
-                        }
-                        break;
-                }
+            case FORWARD:
+                if(map.canMoveTo(position.add(add)))
+                    position=position.add(add);
                 break;
-            case WEST:
-                switch (direction2){
-                    case RIGHT:
-                        direction = MapDirection.NORTH;
-                        break;
-                    case LEFT:
-                        direction = MapDirection.SOUTH;
-                        break;
-                    case FORWARD:
-                        if (position.x > 0){
-                            position.x -= 1;
-                        }
-                        break;
-                    case BACKWARD:
-                        if (position.x < 4){
-                            position.x += 1;
-                        }
-                        break;
-                }
+            case BACKWARD:
+                if(map.canMoveTo(position.subtract(add)))
+                    position=position.subtract(add);
                 break;
         }
-        return toString();
     }
 
 }

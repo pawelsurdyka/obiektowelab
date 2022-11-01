@@ -1,51 +1,31 @@
 package agh.ics.oop;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 
 public class OptionsParser {
-    public static MoveDirection[] parse(String[] args){
-        int l = args.length;
-        MoveDirection[] arr;
-        arr = new MoveDirection[0];
-        for (int i = 0; i < l; i+=1)
-        {
-            switch (args[i]) {
+    public static ArrayList<MoveDirection> parse(String[] args){
+        ArrayList<MoveDirection>A=new ArrayList<>();
+        for(String arg:args){
+            switch (arg) {
                 case "f":
-                    arr = Arrays.copyOf(arr, arr.length + 1);
-                    arr[arr.length - 1] = MoveDirection.FORWARD;
+                case "forward":
+                    A.add(MoveDirection.FORWARD);
                     break;
                 case "b":
-                    arr = Arrays.copyOf(arr, arr.length + 1);
-                    arr[arr.length - 1] = MoveDirection.BACKWARD;
+                case "backward":
+                    A.add(MoveDirection.BACKWARD);
                     break;
                 case "r":
-                    arr = Arrays.copyOf(arr, arr.length + 1);
-                    arr[arr.length - 1] = MoveDirection.RIGHT;
+                case "right":
+                    A.add(MoveDirection.RIGHT);
                     break;
                 case "l":
-                    arr = Arrays.copyOf(arr, arr.length + 1);
-                    arr[arr.length - 1] = MoveDirection.LEFT;
-                    break;
-                case "forward":
-                    arr = Arrays.copyOf(arr, arr.length + 1);
-                    arr[arr.length - 1] = MoveDirection.FORWARD;
-                    break;
-                case "backward":
-                    arr = Arrays.copyOf(arr, arr.length + 1);
-                    arr[arr.length - 1] = MoveDirection.BACKWARD;
-                    break;
-                case "right":
-                    arr = Arrays.copyOf(arr, arr.length + 1);
-                    arr[arr.length - 1] = MoveDirection.RIGHT;
-                    break;
                 case "left":
-                    arr = Arrays.copyOf(arr, arr.length + 1);
-                    arr[arr.length - 1] = MoveDirection.LEFT;
-                    break;
-                default:
+                    A.add(MoveDirection.LEFT);
                     break;
             }
         }
-        return arr;
+        return A;
     }
 }

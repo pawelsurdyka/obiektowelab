@@ -4,58 +4,36 @@ package agh.ics.oop;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RectangularMap implements IWorldMap{
-    public int width;
-    public int height;
-    List<Animal> A = new ArrayList<>();
-    public RectangularMap(int width,int height) {
-        if (width >= 0)
-            this.width = width;
-        else
-            this.width = 5;
-        if (height >= 0)
-            this.height = height;
-        else
-            this.height = 5;
+public class RectangularMap extends AbstractWorldMap{
+
+    @Override
+    public Vector2d lowerLeft() {
+        int minx=Integer.MAX_VALUE;
+        int miny=Integer.MAX_VALUE;
+        for(Animal a:animals){
+            minx = Math.min(minx,a.getPosition().x);
+            miny = Math.min(miny,a.getPosition().y);
+        }
+        return new Vector2d(minx-1, miny-1);
     }
-    Vector2d left_low = new Vector2d(0,0);
+    @Override
+    public Vector2d upperRight() {
+        int maxx=Integer.MIN_VALUE;
+        int maxy=Integer.MIN_VALUE;
+        for(Animal a:animals){
+            maxx = Math.max(maxx,a.getPosition().x);
+            maxy = Math.max(maxy,a.getPosition().y);
+        }
+        return new Vector2d(maxx+1, maxy+1);
+    }
+
     public String toString(){
-        MapVisualizer S = new MapVisualizer(this);
-        return S.draw(left_low,new Vector2d(width, height));
-    }
-    public List<Animal> getA(){
-        return A;
-    }
-
-    public boolean canMoveTo(Vector2d position) {
-        return position.follows(left_low) && position.precedes(new Vector2d(width, height)) && !isOccupied(position);
+        return super.toString();
     }
 
 
-    public boolean place(Animal animal) {
-        Vector2d pos = animal.getPos();
-        if (canMoveTo(pos)) {
-            A.add(animal);
-            return true;
-        }
-        return false;
-    }
 
 
-    public boolean isOccupied(Vector2d position) {
-        for(Animal ani:A){
-            if(ani.getPos().equals(position))
-                return true;
-        }
-        return false;
-    }
 
-
-    public Object objectAt(Vector2d position) {
-        for(Animal obj:A){
-            if(obj.getPos().equals(position))
-                return obj;
-        }
-        return null;
-    }
 }
+

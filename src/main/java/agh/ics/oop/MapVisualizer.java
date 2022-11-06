@@ -12,6 +12,8 @@ public class MapVisualizer {
     private static final String CELL_SEGMENT = "|";
     private IWorldMap map;
 
+
+
     /**
      * Initializes the MapVisualizer with an instance of map to visualize.
      * @param map

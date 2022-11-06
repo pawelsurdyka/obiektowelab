@@ -9,7 +9,7 @@ public class Animal {
         this.map=map;
         this.position=initialPosition;
     }
-    public Vector2d getPos(){
+    public Vector2d getPosition(){
         return position;
     }
     public void setPos(Vector2d pos){

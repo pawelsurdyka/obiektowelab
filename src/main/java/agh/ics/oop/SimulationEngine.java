@@ -19,7 +19,24 @@ public class SimulationEngine implements IEngine{
         }
     }
 
+
+
+    @Override
     public void run(){
+        int i=0;
+        GrassField rmap = (GrassField) map;
+        List<Animal> A = rmap.getA();
+        System.out.println(rmap);
+        for(MoveDirection move:moves){
+            A.get(i).move(move);
+            i+=1;
+            i%=A.size();
+        }
+        System.out.println(rmap);
+        map = rmap;
+    }
+    @Override
+    public void runForRectangularMap(){
         int i=0;
         RectangularMap rmap = (RectangularMap) map;
         List<Animal> A = rmap.getA();
@@ -30,5 +47,6 @@ public class SimulationEngine implements IEngine{
             i%=A.size();
         }
         map = rmap;
+        System.out.println(rmap);
     }
 }

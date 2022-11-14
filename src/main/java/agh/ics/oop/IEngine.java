@@ -14,5 +14,5 @@ public interface IEngine {
      *
      */
     void run();
-    void runForRectangularMap();
+    //void runForRectangularMap();
 }

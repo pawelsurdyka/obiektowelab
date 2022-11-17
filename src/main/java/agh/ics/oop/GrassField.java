@@ -8,6 +8,8 @@ public class GrassField extends AbstractWorldMap{
     protected List<Grass> G = new ArrayList<>();
     protected List<Animal> A = new ArrayList<>();
 
+    MapBoundary bond = new MapBoundary();
+
     public List<Animal> getA(){
         return A;
     }
@@ -40,6 +42,7 @@ public class GrassField extends AbstractWorldMap{
             }
             if(er) {
                 G.add(new Grass(new Vector2d(x, y)));
+                bond.putObject(new Grass(new Vector2d(x, y)));
             }
         }
     }
@@ -50,23 +53,23 @@ public class GrassField extends AbstractWorldMap{
 
     @Override
     public Vector2d[] Size() {
-        int minx=Integer.MAX_VALUE;
-        int miny=Integer.MAX_VALUE;
-        int maxx=Integer.MIN_VALUE;
-        int maxy=Integer.MIN_VALUE;
-        for(Animal a: animals.values()){
-            minx = Math.min(minx,a.getPosition().x);
-            miny = Math.min(miny,a.getPosition().y);
-            maxx = Math.max(maxx,a.getPosition().x);
-            maxy = Math.max(maxy,a.getPosition().y);
-        }
-        for(Grass g:G){
-            minx = Math.min(minx,g.getPosition().x);
-            miny = Math.min(miny,g.getPosition().y);
-            maxx = Math.max(maxx,g.getPosition().x);
-            maxy = Math.max(maxy,g.getPosition().y);
-        }
-        Vector2d[] Border = {new Vector2d(minx,miny),new Vector2d(maxx,maxy)};
+//        int minx=Integer.MAX_VALUE;
+//        int miny=Integer.MAX_VALUE;
+//        int maxx=Integer.MIN_VALUE;
+//        int maxy=Integer.MIN_VALUE;
+//        for(Animal a: animals.values()){
+//            minx = Math.min(minx,a.getPosition().x);
+//            miny = Math.min(miny,a.getPosition().y);
+//            maxx = Math.max(maxx,a.getPosition().x);
+//            maxy = Math.max(maxy,a.getPosition().y);
+//        }
+//        for(Grass g:G){
+//            minx = Math.min(minx,g.getPosition().x);
+//            miny = Math.min(miny,g.getPosition().y);
+//            maxx = Math.max(maxx,g.getPosition().x);
+//            maxy = Math.max(maxy,g.getPosition().y);
+//        }
+        Vector2d[] Border = {bond.getlowerLeft(),bond.getupperRight()};
         return Border;
     }
 
@@ -91,6 +94,7 @@ public class GrassField extends AbstractWorldMap{
                 }
                 if(er) {
                     G.add(new Grass(new Vector2d(x, y)));
+                    bond.putObject(new Grass(new Vector2d(x, y)));
                 }
             }
         }
@@ -123,11 +127,12 @@ public class GrassField extends AbstractWorldMap{
         Vector2d pos = animal.getPosition();
         if (canMoveTo(pos)) {
             animals.put(pos, animal);
+            bond.putObject(animal);
             A.add(animal);
             animal.addObserver(this);
             return true;
         }
-        return false;
+        throw new IllegalArgumentException(pos + " can't put animal at this position");
     }
 
     @Override

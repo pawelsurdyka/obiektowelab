@@ -8,22 +8,20 @@ public class OptionsParser {
         ArrayList<MoveDirection>A=new ArrayList<>();
         for(String arg:args){
             switch (arg) {
-                case "f":
-                case "forward":
+                case "f","forward":
                     A.add(MoveDirection.FORWARD);
                     break;
-                case "b":
-                case "backward":
+                case "b", "backward":
                     A.add(MoveDirection.BACKWARD);
                     break;
-                case "r":
-                case "right":
+                case "r", "right":
                     A.add(MoveDirection.RIGHT);
                     break;
-                case "l":
-                case "left":
+                case "l", "left":
                     A.add(MoveDirection.LEFT);
                     break;
+                default:
+                    throw new IllegalArgumentException(arg + " is not legal move specification");
             }
         }
         return A;

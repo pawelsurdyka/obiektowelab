@@ -9,6 +9,19 @@ public class SimulationEngine implements IEngine{
     ArrayList<MoveDirection> moves;
     IWorldMap map;
     Vector2d[] startpos;
+    List<Animal> A;
+    List<Grass> G;
+    GrassField gmap;
+    public List<Animal> getA(){
+        return A;
+    }
+    public List<Grass> getG(){
+        return G;
+    }
+    public Vector2d[] getBorder(){
+        Vector2d[] Border = {gmap.bond.getlowerLeft(),gmap.bond.getupperRight()};
+        return Border;
+    }
     public SimulationEngine(ArrayList<MoveDirection> moves, IWorldMap map, Vector2d[] startpos){
         this.moves = moves;
         this.map = map;
@@ -23,9 +36,10 @@ public class SimulationEngine implements IEngine{
     @Override
     public void run(){
         int id=0;
-        GrassField gmap = (GrassField) map;
+        gmap = (GrassField) map;
         Map<Vector2d, Animal> animals = gmap.getAnimals();
-        List<Animal> A = gmap.getA();
+        A = gmap.getA();
+        G = gmap.getG();
         System.out.println(gmap);
         while(id<moves.size()){
 //            for(Animal i:animals.values()){

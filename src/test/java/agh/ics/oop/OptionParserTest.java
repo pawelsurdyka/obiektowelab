@@ -5,11 +5,16 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import java.util.List;
 public class OptionParserTest {
     @Test
     public void parseTest(){
-        String[] S = {"f","r","r","l","backward"};
+        List<String> S = new ArrayList<>();
+        S.add("f");
+        S.add("r");
+        S.add("r");
+        S.add("l");
+        S.add("backward");
         ArrayList<MoveDirection> OKdirections = new ArrayList<>();
         OKdirections.add(MoveDirection.FORWARD);
         OKdirections.add(MoveDirection.RIGHT);
@@ -24,7 +29,12 @@ public class OptionParserTest {
     public void parseTestThrow(){
         boolean thrown = false;
         try{
-            String[] S = {"f","r","r","X","backward"};
+            List<String> S = new ArrayList<>();
+            S.add("f");
+            S.add("r");
+            S.add("r");
+            S.add("marmolada");
+            S.add("backward");
             new OptionsParser();
             ArrayList<MoveDirection> directions = OptionsParser.parse(S);
         } catch (IllegalArgumentException ex) {

@@ -13,22 +13,22 @@ public class MapBoundary implements IPositionChangeObserver{
         objectsY.add(object);
     }
 
-    Vector2d getlowerLeft(){
+    public Vector2d getlowerLeft(){
         Collections.sort(objectsX,new cartOrdX());
         Collections.sort(objectsY,new cartOrdY());
         if((objectsX.get(0) instanceof Animal || objectsX.get(0) instanceof Grass) && (objectsY.get(0) instanceof Animal || objectsY.get(0) instanceof Grass))
             return new Vector2d(((IMapElement) objectsX.get(0)).getPosition().x,((IMapElement) objectsY.get(0)).getPosition().y);
         else
-            throw new IllegalArgumentException("lowerLeft untypical");
+            throw new IllegalArgumentException("LL untypical");
     }
-    Vector2d getupperRight(){
+    public Vector2d getupperRight(){
         Collections.sort(objectsX,new cartOrdX());
         Collections.sort(objectsY,new cartOrdY());
         int end = objectsX.size()-1;
         if((objectsX.get(end) instanceof Animal || objectsX.get(end) instanceof Grass) && (objectsY.get(end) instanceof Animal || objectsY.get(end) instanceof Grass))
             return new Vector2d(((IMapElement) objectsX.get(end)).getPosition().x,((IMapElement) objectsY.get(end)).getPosition().y);
         else
-            throw new IllegalArgumentException("upperRight untypical");
+            throw new IllegalArgumentException("UR untypical");
     }
     @Override
     public boolean positionChanged(Vector2d oldPosition, Vector2d newPosition) {
@@ -75,3 +75,4 @@ class cartOrdY implements Comparator<Object> {
         return 0;
     }
 }
+

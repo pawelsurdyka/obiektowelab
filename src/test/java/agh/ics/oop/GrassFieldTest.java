@@ -6,11 +6,17 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.List;
 
 public class GrassFieldTest {
     @Test
     public void GrassFieldTest() {
-        String[] S = {"f", "f", "r", "b", "f"};
+        List<String> S = new ArrayList<>();
+        S.add("f");
+        S.add("f");
+        S.add("r");
+        S.add("b");
+        S.add("f");
         ArrayList<MoveDirection> directions = new OptionsParser().parse(S);
         GrassField map = new GrassField(10);
         Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(3, 4)};

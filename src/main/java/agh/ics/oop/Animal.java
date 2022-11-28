@@ -23,6 +23,15 @@ public class Animal implements IMapElement{
         if(dir==MapDirection.SOUTH) return "v";
         return "<";
     }
+    public String getImage(){
+        return switch (this.dir) {
+            case NORTH -> "file:src/main/resources/u1.png";
+            case EAST -> "file:src/main/resources/r1.png";
+            case SOUTH -> "file:src/main/resources/b1.png";
+            case WEST -> "file:src/main/resources/l1.png";
+        };
+//        return "file:src/main/resources/dirt1.png";
+    }
     public void move(MoveDirection direction){
         Vector2d oldPosition = position;
         Vector2d add = dir.toUnitVector();
@@ -36,16 +45,15 @@ public class Animal implements IMapElement{
             case FORWARD:
                 if(map.canMoveTo(position.add(add))) {
                     position = position.add(add);
-                    this.positionChanged(oldPosition, this.position);
                 }
                 break;
             case BACKWARD:
                 if(map.canMoveTo(position.subtract(add))) {
                     position = position.subtract(add);
-                    this.positionChanged(oldPosition, this.position);
                 }
                 break;
         }
+        this.positionChanged(oldPosition, this.position);
     }
     public void addObserver(IPositionChangeObserver observer){
         observers.add(observer);

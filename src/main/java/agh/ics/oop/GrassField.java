@@ -1,12 +1,14 @@
 package agh.ics.oop;
 import java.lang.Math;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GrassField extends AbstractWorldMap{
     private int grassNo;
     protected Map<Vector2d, Animal> animals = new HashMap<>();
-    protected List<Grass> G = new ArrayList<>();
-    protected List<Animal> A = new ArrayList<>();
+    protected List<Grass> G = new CopyOnWriteArrayList<>();
+    protected List<Animal> A = new CopyOnWriteArrayList<>();
+    public boolean update = false;
 
     MapBoundary bond = new MapBoundary();
 
@@ -28,12 +30,12 @@ public class GrassField extends AbstractWorldMap{
         for(int i=0; i<grassNo; i++){
             er = false;
             Random rand = new Random();
-            int x = 0;
-            int y = 0;
+            int x = 1;
+            int y = 1;
             while(!er) {
                 er = true;
-                x = rand.nextInt((int) Math.ceil(Math.sqrt(grassNo * 10)));
-                y = rand.nextInt((int) Math.ceil(Math.sqrt(grassNo * 10)));
+                x = rand.nextInt((int) Math.ceil(Math.sqrt(grassNo * 10))+1);
+                y = rand.nextInt((int) Math.ceil(Math.sqrt(grassNo * 10))+1);
                 for (Grass vec : G) {
                     if (vec.getPosition().equals(new Vector2d(x, y))) {
                         er = false;
@@ -69,13 +71,17 @@ public class GrassField extends AbstractWorldMap{
 //            maxx = Math.max(maxx,g.getPosition().x);
 //            maxy = Math.max(maxy,g.getPosition().y);
 //        }
-        Vector2d[] Border = {bond.getlowerLeft(),bond.getupperRight()};
+//        Vector2d[] Border = {new Vector2d(minx,miny),new Vector2d(maxx,maxy)};
+//        return Border;
+        Vector2d[] Border = {bond.getLL(),bond.getUR()};
+        System.out.println(Border[0]+"  "+Border[1]);
         return Border;
     }
 
     void makeNewGrass(Vector2d position){
         for(int i=0;i<G.size();i++){
             if(G.get(i).getPosition().equals(position)){
+                bond.deleteG(G.get(i));
                 G.remove(i);
                 boolean er;
                 er = false;
@@ -116,8 +122,10 @@ public class GrassField extends AbstractWorldMap{
         if (canMoveTo(newPosition)) {
             animals.put(newPosition, animals.get(oldPosition));
             animals.remove(oldPosition);
+            update = true;
             return true;
         }
+        update = true;
         return false;
     }
 
@@ -125,14 +133,15 @@ public class GrassField extends AbstractWorldMap{
     @Override
     public boolean place(Animal animal) {
         Vector2d pos = animal.getPosition();
-        if (canMoveTo(pos)) {
+        if (canMoveTo(pos)){
             animals.put(pos, animal);
             bond.putObject(animal);
             A.add(animal);
             animal.addObserver(this);
             return true;
         }
-        throw new IllegalArgumentException(pos + " can't put animal at this position");
+        throw new IllegalArgumentException(pos + " is invalid position");
+//        return false;
     }
 
     @Override
